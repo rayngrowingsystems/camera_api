@@ -1,0 +1,8 @@
+#ignore files:
+.DS_Store
+*.pyc
+*.bak
+Camera-Module
+config.py
+
+.idea/
