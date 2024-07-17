@@ -1,3 +1,5 @@
+![RAYN Vision System Camera](https://rayngrowingsystems.com/wp-content/uploads/2024/04/RAYN_VisionCamera_1160x200.jpg)
+
 # RAYN Vision System Camera API v1
 ## Introduction
 The RAYN Vision System (RVS) is a compact, multispectral camera imaging tool for plant researchers. 
