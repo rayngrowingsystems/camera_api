@@ -86,8 +86,13 @@ Float in the range from 0.0 - 0.25 (seconds)
 ## Feedback and Comments
 
 If you experience any problems or have feedback on the API/code, please add an issue to this repository or contact
-[Alexander Kutschera](mailto:alexander.kutschera@etcconnect.com).
+[RAYN Vision Support](mailto:RAYNVisionSupport@rayngrowingsystems.com).
 
 ## License and Copyright
+© 2024 ETC Inc d/b/a RAYN Growing Systems. Licensed under the Apache License, Version 2.0
+You may not use the files in this repository except in compliance with the License.
 
-Copyright 2024 RAYN Growing Systems, Licensed under the Apache License, Version 2.0
+Trademark and patent info: [rayngrowingsystems.com/ip](https://rayngrowingsystems.com/ip/) \
+Third-party license agreement info: [etcconnect.com/licenses](https://www.etcconnect.com/licenses/). \
+Product and specifications subject to change.
+Product and specifications subject to change.

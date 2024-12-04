@@ -1,4 +1,4 @@
-# Copyright 2024 RAYN Growing Systems
+# Copyright 2024 ETC Inc d/b/a RAYN Growing Systems
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -303,7 +303,7 @@ def take_ms_image(ip_address=config.CAMERA_IP, key=config.UNIQUE_KEY, timeout=12
     """
     file_list = None
 
-    api_url = f"http://{ip_address}/api/v1/files/takeimage?key={key}"
+    api_url = f"http://{ip_address}/api/v1/images/takeimage?key={key}"
 
     response = api_call(api_url, timeout=timeout)  # Take multispectral image
 
