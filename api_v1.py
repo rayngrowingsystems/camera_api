@@ -279,7 +279,7 @@ def get_files_in_range(start_datetime, end_datetime, source, ip_address=config.C
 
     files_in_range = None
 
-    api_url = f"http://{ip_address}/api/v1/files/firstinrange?key={key}"
+    api_url = f"http://{ip_address}/api/v1/images/firstinrange?key={key}"
 
     response = api_call(api_url, settings=settings, timeout=timeout)  # Query first file in date/time range
 
