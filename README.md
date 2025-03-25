@@ -74,14 +74,14 @@ Float in the range from 0.0 - 0.25 (seconds)
 
 ### Available sources
 
-| source        | comment                        |
-|---------------|--------------------------------|
-| service       | log files                      |
-| config        | config files                   |
-| scheduler     | images taken by the scheduler  |
-| api_takeimage | images taken via API           |
-| io_takeimage  | images taken via IO            |
-| web_image     | images taken via web interface |
+| source         | comment                        |
+|----------------|--------------------------------|
+| service        | log files                      |
+| config         | config files                   |
+| scheduler      | images taken by the scheduler  |
+| api_takeimages | images taken via API           |
+| io_takeimages  | images taken via IO            |
+| web_image      | images taken via web interface |
 
 ## Feedback and Comments
 
