@@ -17,10 +17,12 @@ general commands:
 - info: info/
 - reset: reset/
 - flash up light: flashlight/
+
 files:
 - get file: files/get/
 - delete file: files/delete/
 - list all files: files/list/
+
 images:
 - list images in datetime range: images/firstinrange/
 - take ms image: images/takeimage/
