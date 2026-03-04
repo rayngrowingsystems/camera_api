@@ -93,7 +93,9 @@ This repository now includes two language-agnostic API reference files for devel
 - `openapi.yaml`: OpenAPI 3.0.3 specification for code generation, API tooling, and contract-based integration.
 
 Use `REST_API_REFERENCE.md` for quick reading and onboarding.
-Use `openapi.yaml` when you need to generate clients or import the API into tools like Postman/Swagger.`r`n`r`n## Feedback and Comments
+Use `openapi.yaml` when you need to generate clients or import the API into tools like Postman/Swagger.
+
+## Feedback and Comments
 
 If you experience any problems or have feedback on the API/code, please add an issue to this repository or contact
 [RAYN Vision Support](mailto:RAYNVisionSupport@rayngrowingsystems.com).
