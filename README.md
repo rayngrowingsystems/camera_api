@@ -83,7 +83,15 @@ Float in the range from 0.0 - 0.25 (seconds)
 | io_takeimages  | images taken via IO            |
 | web_image      | images taken via web interface |
 
-## Feedback and Comments
+## API Documentation Files
+
+This repository now includes two language-agnostic API reference files for developers integrating with the camera API:
+
+- `REST_API_REFERENCE.md`: human-readable endpoint reference with parameters, source values, spectrum mapping, and request examples.
+- `openapi.yaml`: OpenAPI 3.0.3 specification for code generation, API tooling, and contract-based integration.
+
+Use `REST_API_REFERENCE.md` for quick reading and onboarding.
+Use `openapi.yaml` when you need to generate clients or import the API into tools like Postman/Swagger.`r`n`r`n## Feedback and Comments
 
 If you experience any problems or have feedback on the API/code, please add an issue to this repository or contact
 [RAYN Vision Support](mailto:RAYNVisionSupport@rayngrowingsystems.com).
@@ -96,3 +104,5 @@ Trademark and patent info: [rayngrowingsystems.com/ip](https://rayngrowingsystem
 Third-party license agreement info: [etcconnect.com/licenses](https://www.etcconnect.com/licenses/). \
 Product and specifications subject to change.
 Product and specifications subject to change.
+
+
