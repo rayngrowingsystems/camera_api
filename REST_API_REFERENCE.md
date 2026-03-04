@@ -15,6 +15,14 @@ Transport notes:
 - Most endpoints are called as HTTP `GET`.
 - File upload uses HTTP `POST` with `Content-Type: application/octet-stream`.
 - Requests in this repo send parameters as JSON payload on `GET` requests for endpoints that require inputs.
+- `GET` + JSON body parsing is very strict. Equivalent query-string requests may be rejected.
+
+Client compatibility notes:
+
+- Python `requests` (`requests.get(..., json=...)`) works reliably with this repository.
+- PowerShell `Invoke-RestMethod` does not support sending a body with `GET`.
+- For PowerShell terminal usage, prefer `curl.exe` with stdin and `--data-binary "@-"`.
+- On Linux/macOS shells, `curl` with piped JSON body is typically straightforward.
 
 ## 1) System Endpoints
 
@@ -200,6 +208,24 @@ with body/params:
   "index": 0,
   "limit": 500
 }
+```
+
+PowerShell (`curl.exe`) compatible form:
+
+```powershell
+$json = '{"source":"scheduler","index":0,"limit":500}'
+$json | curl.exe -sS -X GET "http://<CAMERA_IP>/api/v1/files/list?key=<API_KEY>" `
+  -H "Content-Type: application/json" `
+  --data-binary "@-"
+```
+
+Linux/macOS shell compatible form:
+
+```bash
+printf '%s' '{"source":"scheduler","index":0,"limit":500}' | \
+curl -sS -X GET "http://<CAMERA_IP>/api/v1/files/list?key=<API_KEY>" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
 ```
 
 Take multispectral image:
