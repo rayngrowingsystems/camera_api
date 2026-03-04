@@ -1,0 +1,343 @@
+openapi: 3.0.3
+info:
+  title: RAYN Vision Camera REST API v1
+  version: 1.0.0
+  description: |
+    OpenAPI specification derived from this repository's documented and implemented API usage.
+
+    Notes:
+    - Authentication uses a required `key` query parameter.
+    - Repository client sends some GET parameters as JSON bodies; this spec models them as query parameters for better cross-tool compatibility.
+servers:
+  - url: http://{cameraIp}/api/v1
+    variables:
+      cameraIp:
+        default: 10.1.2.1
+        description: Camera IP address
+security:
+  - ApiKeyQuery: []
+
+tags:
+  - name: System
+  - name: Files
+  - name: Images
+
+paths:
+  /status:
+    get:
+      tags: [System]
+      summary: Get camera status
+      operationId: getStatus
+      responses:
+        '200':
+          description: Camera status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+
+  /info:
+    get:
+      tags: [System]
+      summary: Get camera system and health information
+      operationId: getInfo
+      responses:
+        '200':
+          description: Camera info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoResponse'
+
+  /reset:
+    get:
+      tags: [System]
+      summary: Restart camera
+      operationId: resetCamera
+      responses:
+        '200':
+          description: Reset command accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericObject'
+
+  /flashlight:
+    get:
+      tags: [System]
+      summary: Flash LED light on a single spectrum
+      operationId: flashLight
+      parameters:
+        - $ref: '#/components/parameters/Spectrum'
+        - $ref: '#/components/parameters/Brightness'
+        - name: time
+          in: query
+          required: true
+          description: Flash duration in milliseconds.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Flashlight command response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericObject'
+
+  /files/get:
+    get:
+      tags: [Files]
+      summary: Download a file from camera storage
+      operationId: getFile
+      parameters:
+        - $ref: '#/components/parameters/Filename'
+        - $ref: '#/components/parameters/Source'
+      responses:
+        '200':
+          description: File content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+  /files/delete:
+    get:
+      tags: [Files]
+      summary: Delete a file from camera storage
+      operationId: deleteFile
+      parameters:
+        - $ref: '#/components/parameters/Filename'
+        - $ref: '#/components/parameters/Source'
+      responses:
+        '200':
+          description: Delete command response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericObject'
+
+  /files/list:
+    get:
+      tags: [Files]
+      summary: List files in a source folder
+      operationId: listFiles
+      parameters:
+        - $ref: '#/components/parameters/Source'
+        - name: index
+          in: query
+          required: false
+          description: Start index of file listing.
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+        - name: limit
+          in: query
+          required: false
+          description: Maximum number of files to return.
+          schema:
+            type: integer
+            default: 500
+            minimum: 1
+      responses:
+        '200':
+          description: File list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileListResponse'
+
+  /files/put/{filename}:
+    post:
+      tags: [Files]
+      summary: Upload a file to camera storage
+      operationId: uploadFile
+      parameters:
+        - name: filename
+          in: path
+          required: true
+          description: Target filename on camera.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Upload command response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericObject'
+
+  /images/firstinrange:
+    get:
+      tags: [Images]
+      summary: List files created in a datetime range
+      operationId: getFilesInRange
+      parameters:
+        - name: startDateTime
+          in: query
+          required: true
+          description: Start datetime in ISO8601 format.
+          schema:
+            type: string
+            format: date-time
+        - name: endDateTime
+          in: query
+          required: true
+          description: End datetime in ISO8601 format.
+          schema:
+            type: string
+            format: date-time
+        - $ref: '#/components/parameters/Source'
+      responses:
+        '200':
+          description: File list in requested time range
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileListResponse'
+
+  /images/takeimage:
+    get:
+      tags: [Images]
+      summary: Trigger multispectral image capture
+      operationId: takeMultispectralImage
+      responses:
+        '200':
+          description: Captured file info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TakeImageResponse'
+
+  /camera/image.{ext}:
+    get:
+      tags: [Images]
+      summary: Capture monochrome image
+      operationId: takeMonochromeImage
+      parameters:
+        - name: ext
+          in: path
+          required: true
+          description: Output file extension.
+          schema:
+            type: string
+            enum: [jpg, png]
+        - $ref: '#/components/parameters/Spectrum'
+        - $ref: '#/components/parameters/Brightness'
+        - name: exposure
+          in: query
+          required: true
+          description: Exposure time in seconds.
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            maximum: 0.25
+      responses:
+        '200':
+          description: Image data
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+            image/png:
+              schema:
+                type: string
+                format: binary
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+
+components:
+  securitySchemes:
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: key
+
+  parameters:
+    Filename:
+      name: filename
+      in: query
+      required: true
+      schema:
+        type: string
+    Source:
+      name: source
+      in: query
+      required: true
+      description: |
+        Known values from repository docs: service, config, scheduler,
+        api_takeimages, io_takeimages, web_image.
+      schema:
+        type: string
+    Spectrum:
+      name: spectrum
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 10
+      description: |
+        Spectrum index.
+        0 none, 1 blue, 2 cyan, 3 green, 4 amber, 5 red,
+        6 deep red, 7 far red, 8 NIR-850, 9 white, 10 NIR-940.
+    Brightness:
+      name: brightness
+      in: query
+      required: true
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 1000
+
+  schemas:
+    GenericObject:
+      type: object
+      additionalProperties: true
+
+    StatusResponse:
+      type: object
+      description: Device-specific status payload.
+      additionalProperties: true
+
+    InfoResponse:
+      type: object
+      description: Device-specific system info payload.
+      additionalProperties: true
+
+    FileListResponse:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+        total:
+          type: integer
+      additionalProperties: true
+
+    TakeImageResponse:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+        source:
+          type: string
+      additionalProperties: true
