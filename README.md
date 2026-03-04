@@ -85,6 +85,7 @@ Float in the range from 0.0 - 0.25 (seconds)
 | io_takeimages  | images taken via IO            |
 | web_image      | images taken via web interface |
 
+
 ## API Documentation Files
 
 This repository now includes two language-agnostic API reference files for developers integrating with the camera API:
@@ -94,6 +95,35 @@ This repository now includes two language-agnostic API reference files for devel
 
 Use `REST_API_REFERENCE.md` for quick reading and onboarding.
 Use `openapi.yaml` when you need to generate clients or import the API into tools like Postman/Swagger.
+
+## Request Format Compatibility Notes
+
+There is a strict behavior for endpoints like `files/list`:
+
+- The camera expects parameters in a JSON request body, even on HTTP `GET`.
+- Query parameters alone (for example `?source=...&index=...`) may redirect to `/status` or fail.
+- PowerShell `Invoke-RestMethod` does not support sending a body with `GET`.
+- `curl.exe` can work, but inline `--data` may fail depending on shell escaping/body formatting.
+
+Reliable PowerShell pattern using `curl.exe` with stdin:
+
+```powershell
+$json = '{"source":"api_takeimages","index":0,"limit":10}'
+$json | curl.exe -sS -X GET "http://<CAMERA_IP>/api/v1/files/list?key=<API_KEY>" `
+  -H "Content-Type: application/json" `
+  --data-binary "@-"
+```
+
+Linux/macOS shell equivalent:
+
+```bash
+printf '%s' '{"source":"api_takeimages","index":0,"limit":10}' | \
+curl -sS -X GET "http://<CAMERA_IP>/api/v1/files/list?key=<API_KEY>" \
+  -H "Content-Type: application/json" \
+  --data-binary @-
+```
+
+If you see inconsistent behavior across clients, the Python client in this repository (`requests.get(..., json=...)`) is the reference implementation.
 
 ## Feedback and Comments
 
